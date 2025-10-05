@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>安卓使用hexo+Github-Pages搭建个人博客</title>
+    <url>/2025/10/05/%E5%AE%89%E5%8D%93%E4%BD%BF%E7%94%A8hexo-Github-Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>  闲来无事，拿termux用hexo搭建个博客，并且推到了GitHub<br>废话不说，直接上教程</p>
+<h1 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h1><h2 id="安装termux"><a href="#安装termux" class="headerlink" title="安装termux"></a>安装termux</h2><p>如果你是iPhone，那么请打开 <del>拼多多</del> 购物软件，买个安卓手机<br>termux下载地址：<a href="http://getzt.icdown.club/">http://getzt.icdown.club/</a><br>进去后输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sed -i &#x27;s@^\(deb.*stable main\)$@#\1\ndeb https://mirrors.tuna.tsinghua.edu.cn/termux/apt/termux-main stable main@&#x27; $PREFIX/etc/apt/sources.list  </span><br><span class="line">apt update &amp;&amp; apt upgrade</span><br></pre></td></tr></table></figure>
+<p>切换清华镜像源</p>
+<h2 id="安装nodejs"><a href="#安装nodejs" class="headerlink" title="安装nodejs"></a>安装nodejs</h2><p>安装nodejs</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pkg install nodejs</span><br></pre></td></tr></table></figure>
+<p>安装vim</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pkg install vim</span><br></pre></td></tr></table></figure>
+<p>然后输入 <code>nodejs -v</code> <code>vim -v</code>查看是否安装成功</p>
+<h2 id="安装及配置hexo"><a href="#安装及配置hexo" class="headerlink" title="安装及配置hexo"></a>安装及配置hexo</h2><p>安装hexo</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 切换淘宝镜像</span><br><span class="line">npm --registry https://registry.npm.taobao.org install express</span><br><span class="line">npm install -g hexo-cli|</span><br></pre></td></tr></table></figure>
+<p>如果安装不了hexo就使用cnpm</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install cnpm</span><br></pre></td></tr></table></figure>
+<p>接下来所有使用npm的地方都用cnpm代替<br>配置hexo<br>输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo init hexo # hexo 可以换成你自己想要的文件夹名称</span><br><span class="line">cd hexo</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p>测试hexo</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo g # 生成文件  </span><br><span class="line">  </span><br><span class="line">hexo s # 启动 http 服务器</span><br></pre></td></tr></table></figure>
+<p>使用浏览器打开 <code>http://localhost:4000</code><br>查看是否打开hexo页面</p>
+<h2 id="部署到GitHub"><a href="#部署到GitHub" class="headerlink" title="部署到GitHub"></a>部署到GitHub</h2><p>安装git</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pkg install git</span><br></pre></td></tr></table></figure>
+<p>链接到GitHub<br>去注册一个GitHub<br>由于不可抗力因素，GitHub在国内访问慢，推荐用个梯子<br>输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git config --global user.name &quot;Github名称&quot;  </span><br><span class="line">git config --global user.email &quot;注册邮箱&quot;</span><br></pre></td></tr></table></figure>
+<p>创建ssh密钥</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;Github 邮箱&quot;</span><br></pre></td></tr></table></figure>
+<p>然后一路enter<br>去根目录下找一个叫.ssh的目录<br>vim打开id_rsa.pub文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>复制内容 注意：不要泄露给别人<br>打开 Github，登录后点击头像，选择 Setting，找到 SSH and GPG keys，点击 New SSH key<br>Key的内容粘贴id_rsa.pub内容 ，Title随便填<br>然后打开Ternmux，输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>提示 Are you sure… 输入yes<br>显示 ‘Hi xxx!You’ve sucessfully…’ 说明连接成功<br>创建一个仓库<br>仓库的名称输入 GitHub用户名.github.io<br>勾选 ‘Initialize this repository with a README’<br>仓库类型是 public<br>创建好了后就启动了一个服务器，可以通过 <code>https://GitHub用户名.github.io</code> 来访问<br>部署到GitHub<br>输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>cd进入hexo根目录（就是你上面init的那个目录）<br>输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim _config.yml</span><br></pre></td></tr></table></figure>
+<p>划到最底下<br>修改</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:  </span><br><span class="line">    type: git  </span><br><span class="line">    repository: git@github.com:[用户名]/[用户名].github.io.git  </span><br><span class="line">    branch: master</span><br></pre></td></tr></table></figure>
+<p>然后按esc，输入:<code>wq</code>保存<br>上传到GitHub</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<p>然后你就能看到了页面<br>如果看不到，那么去GitHub仓库把main分支改成master，这里不再阐述<br>教程可以看这里<a href="https://docs.github.com/zh/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/changing-the-default-branch">https://docs.github.com/zh/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/changing-the-default-branch</a></p>
+<h1 id="优化hexo"><a href="#优化hexo" class="headerlink" title="优化hexo"></a>优化hexo</h1><p>可以看看<a href="https://zhuanlan.zhihu.com/p/618864711">Hexo+Next主题搭建个人博客+优化全过程（完整详细版） - 知乎</a>，这里就不说了</p>
+<h1 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h1><p>主要涉及Linux基本操作，免费才是王道<br>#Android #自建博客 #hexo</p>
+]]></content>
+      <tags>
+        <tag>技术</tag>
+      </tags>
+  </entry>
+</search>
